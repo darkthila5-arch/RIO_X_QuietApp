@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <uses-feature
+        android:name="android.software.live_wallpaper"
+        android:required="false" />
+
     <application
         android:allowBackup="true"
-        android:label="Quiet App"
+        android:label="@string/app_name"
         android:theme="@android:style/Theme.DeviceDefault.Light">
 
         <activity
@@ -14,6 +23,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Screen eka mada pennana snow overlay -->
+        <service
+            android:name=".SnowOverlayService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="snow_overlay" />
+        </service>
+
+        <!-- Live wallpaper widiyata -->
+        <service
+            android:name=".SnowWallpaperService"
+            android:exported="true"
+            android:permission="android.permission.BIND_WALLPAPER">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/snow_wallpaper" />
+        </service>
 
     </application>
 </manifest>
